@@ -19,7 +19,19 @@ function setTheme(theme, persist = true) {
   updateThemeToggle(theme);
 
   if (persist) {
-    localStorage.setItem("theme", theme);
+    try {
+      localStorage.setItem("theme", theme);
+    } catch (error) {
+      // Keep the active theme even if the browser blocks storage.
+    }
+  }
+}
+
+function hasSavedTheme() {
+  try {
+    return localStorage.getItem("theme") !== null;
+  } catch (error) {
+    return false;
   }
 }
 
@@ -30,11 +42,17 @@ themeToggle.addEventListener("click", () => {
   setTheme(nextTheme);
 });
 
-systemTheme.addEventListener("change", (event) => {
-  if (!localStorage.getItem("theme")) {
+function handleSystemThemeChange(event) {
+  if (!hasSavedTheme()) {
     setTheme(event.matches ? "dark" : "light", false);
   }
-});
+}
+
+if (typeof systemTheme.addEventListener === "function") {
+  systemTheme.addEventListener("change", handleSystemThemeChange);
+} else if (typeof systemTheme.addListener === "function") {
+  systemTheme.addListener(handleSystemThemeChange);
+}
 
 function closeMenu() {
   navToggle.classList.remove("active");

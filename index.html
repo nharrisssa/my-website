@@ -7,7 +7,14 @@
   <title>Alex Morgan — Front-End Developer</title>
   <script>
     (() => {
-      const savedTheme = localStorage.getItem("theme");
+      let savedTheme = null;
+
+      try {
+        savedTheme = localStorage.getItem("theme");
+      } catch (error) {
+        // Theme switching still works when storage is unavailable.
+      }
+
       const systemTheme = window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
       document.documentElement.dataset.theme = savedTheme || systemTheme;
     })();
@@ -15,8 +22,8 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@600;700;800&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="styles.css">
-  <script src="script.js" defer></script>
+  <link rel="stylesheet" href="styles.css?v=2">
+  <script src="script.js?v=2" defer></script>
 </head>
 <body>
   <a class="skip-link" href="#main-content">Skip to content</a>
