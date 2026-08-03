@@ -5,6 +5,36 @@ const navAnchors = document.querySelectorAll(".nav-links a");
 const year = document.querySelector("#year");
 const contactForm = document.querySelector("#contact-form");
 const formStatus = document.querySelector(".form-status");
+const themeToggle = document.querySelector(".theme-toggle");
+const systemTheme = window.matchMedia("(prefers-color-scheme: dark)");
+
+function updateThemeToggle(theme) {
+  const isDark = theme === "dark";
+  themeToggle.setAttribute("aria-pressed", String(isDark));
+  themeToggle.setAttribute("aria-label", `Switch to ${isDark ? "light" : "dark"} mode`);
+}
+
+function setTheme(theme, persist = true) {
+  document.documentElement.dataset.theme = theme;
+  updateThemeToggle(theme);
+
+  if (persist) {
+    localStorage.setItem("theme", theme);
+  }
+}
+
+updateThemeToggle(document.documentElement.dataset.theme);
+
+themeToggle.addEventListener("click", () => {
+  const nextTheme = document.documentElement.dataset.theme === "dark" ? "light" : "dark";
+  setTheme(nextTheme);
+});
+
+systemTheme.addEventListener("change", (event) => {
+  if (!localStorage.getItem("theme")) {
+    setTheme(event.matches ? "dark" : "light", false);
+  }
+});
 
 function closeMenu() {
   navToggle.classList.remove("active");

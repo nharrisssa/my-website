@@ -1,4 +1,5 @@
 :root {
+  color-scheme: light;
   --ink: #10234a;
   --ink-soft: #50617f;
   --blue: #1463ff;
@@ -6,12 +7,27 @@
   --blue-pale: #eaf2ff;
   --blue-mist: #f3f7ff;
   --white: #ffffff;
+  --surface: #ffffff;
   --line: #dce5f3;
   --navy: #071c46;
   --shadow: 0 24px 70px rgba(20, 60, 130, 0.13);
   --radius: 24px;
   --heading: "Manrope", sans-serif;
   --body: "DM Sans", sans-serif;
+}
+
+:root[data-theme="dark"] {
+  color-scheme: dark;
+  --ink: #edf3ff;
+  --ink-soft: #aab9d3;
+  --blue: #6f9fff;
+  --blue-dark: #a9c5ff;
+  --blue-pale: #172c53;
+  --blue-mist: #0c1730;
+  --surface: #101c33;
+  --line: #273752;
+  --navy: #050d1d;
+  --shadow: 0 24px 70px rgba(0, 5, 18, 0.4);
 }
 
 * {
@@ -26,11 +42,12 @@ html {
 
 body {
   color: var(--ink);
-  background: var(--white);
+  background: var(--surface);
   font-family: var(--body);
   font-size: 16px;
   line-height: 1.7;
   overflow-x: hidden;
+  transition: color 0.25s ease, background-color 0.25s ease;
 }
 
 body.menu-open {
@@ -94,6 +111,11 @@ a {
   backdrop-filter: blur(18px);
 }
 
+:root[data-theme="dark"] .site-header.scrolled {
+  background: rgba(10, 19, 36, 0.9);
+  box-shadow: 0 8px 30px rgba(0, 4, 16, 0.28);
+}
+
 .nav {
   display: flex;
   align-items: center;
@@ -139,6 +161,52 @@ h2 span {
 
 .nav-links > a:not(.button):hover::after {
   width: 100%;
+}
+
+.theme-toggle {
+  position: relative;
+  display: grid;
+  flex: 0 0 auto;
+  place-items: center;
+  width: 42px;
+  height: 42px;
+  color: var(--ink);
+  background: var(--blue-mist);
+  border: 1px solid var(--line);
+  border-radius: 50%;
+  cursor: pointer;
+  overflow: hidden;
+  transition: color 0.2s ease, background 0.2s ease, border-color 0.2s ease, transform 0.2s ease;
+}
+
+.theme-toggle:hover {
+  color: var(--blue);
+  border-color: var(--blue);
+  transform: translateY(-2px);
+}
+
+.theme-toggle:focus-visible {
+  outline: 3px solid color-mix(in srgb, var(--blue) 35%, transparent);
+  outline-offset: 3px;
+}
+
+.theme-icon {
+  position: absolute;
+  font-size: 19px;
+  line-height: 1;
+  transition: opacity 0.2s ease, transform 0.25s ease;
+}
+
+.theme-icon-sun,
+:root[data-theme="dark"] .theme-icon-moon {
+  opacity: 1;
+  transform: rotate(0) scale(1);
+}
+
+.theme-icon-moon,
+:root[data-theme="dark"] .theme-icon-sun {
+  opacity: 0;
+  transform: rotate(-45deg) scale(0.5);
 }
 
 .nav-toggle {
@@ -213,6 +281,14 @@ h2 span {
     linear-gradient(rgba(20, 99, 255, 0.04) 1px, transparent 1px);
   background-size: auto, 42px 42px, 42px 42px;
   overflow: hidden;
+}
+
+:root[data-theme="dark"] .hero {
+  background:
+    linear-gradient(rgba(7, 14, 29, 0.84), rgba(7, 14, 29, 0.94)),
+    linear-gradient(90deg, rgba(111, 159, 255, 0.07) 1px, transparent 1px),
+    linear-gradient(rgba(111, 159, 255, 0.07) 1px, transparent 1px);
+  background-size: auto, 42px 42px, 42px 42px;
 }
 
 .hero-grid {
@@ -403,6 +479,11 @@ h1 {
   backdrop-filter: blur(12px);
 }
 
+:root[data-theme="dark"] .floating-card {
+  background: rgba(16, 28, 51, 0.94);
+  border-color: rgba(111, 159, 255, 0.18);
+}
+
 .code-card {
   top: 16%;
   left: -14%;
@@ -539,7 +620,7 @@ h1 {
 
 .skills-panel {
   padding: 38px;
-  background: var(--white);
+  background: var(--surface);
   border: 1px solid var(--line);
   border-radius: var(--radius);
   box-shadow: 0 18px 55px rgba(28, 63, 126, 0.08);
@@ -612,7 +693,7 @@ h1 {
 
 .project-card {
   overflow: hidden;
-  background: var(--white);
+  background: var(--surface);
   border: 1px solid var(--line);
   border-radius: var(--radius);
   box-shadow: 0 14px 50px rgba(25, 58, 119, 0.07);
@@ -962,7 +1043,7 @@ h1 {
 .contact-form {
   padding: 38px;
   color: var(--ink);
-  background: var(--white);
+  background: var(--surface);
   border-radius: var(--radius);
   box-shadow: 0 28px 70px rgba(0, 8, 30, 0.25);
 }
@@ -995,6 +1076,13 @@ textarea {
   border-radius: 10px;
   outline: none;
   transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+:root[data-theme="dark"] input,
+:root[data-theme="dark"] select,
+:root[data-theme="dark"] textarea {
+  background: #0a1529;
+  border-color: var(--line);
 }
 
 input,
@@ -1169,6 +1257,10 @@ footer {
     font-size: 25px;
     transform: translateX(100%);
     transition: transform 0.3s ease;
+  }
+
+  :root[data-theme="dark"] .nav-links {
+    background: rgba(7, 14, 29, 0.98);
   }
 
   .nav-links.open {
